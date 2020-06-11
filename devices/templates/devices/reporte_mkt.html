@@ -1,0 +1,67 @@
+{% extends "devices/home_base.html" %}
+    
+    {% block cardbody%}
+    {% load static %}
+    <div class="form">
+        <div style="background-color: #00bcd4; height: 20px;" class="card-header">
+        <label>Registros</label>                
+        </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><img src="{% static 'devices/img/calendar.svg' %}"/></div>
+                    </div>
+                    <input class="form-control" type="date" value="28/05/2020">
+                </div>             
+            </div>
+            <div class="form-group col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><img src="{% static 'devices/img/filas.svg' %}"/></div>
+                    </div>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option>Seleccion filas</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                    
+                </div>             
+            </div>
+            <div class="form-group col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><img src="{% static 'devices/img/ubicacion.svg' %}"/></div>
+                    </div>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option selected>Seleccion Planta</option>
+                            <option>Almacen1-Ate</option>
+                            <option>Almacen2-Ate</option>
+                            <option>Almacen3-Lurin</option>
+                            <option>Acondicionado-Ate</option>
+                            <option>Acondicionado-Lurin</option>
+                        </select>
+                    
+                </div>             
+            </div>
+            <div class="form-group col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <a class="btn btn-info fo" href=""><img src="{% static 'devices/img/search.svg' %}" ></a>
+                    </div>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">                   
+                </div>
+                
+            </div>               
+        </div>    
+    </div>
+    <div class=" border-top" style="background: #fafafa; height: 40px;">
+        <small style="margin-left: 20px;" class="text-info">La informacion corresponde a las 12 ultimas horas</small>
+    </div>
+    </div>
+    
+
+    {% endblock %}

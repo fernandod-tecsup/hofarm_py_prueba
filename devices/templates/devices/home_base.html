@@ -1,0 +1,148 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Memory', 80],
+        ]);
+
+        var options = {
+          width: 400, height: 120,
+          redFrom: 90, redTo: 100,
+          yellowFrom:75, yellowTo: 90,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+
+        setInterval(function() {
+          data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+          chart.draw(data, options);
+        }, 13000);
+      }
+    </script>
+    <link rel="stylesheet" href="{% static 'devices/js/morris.js'%}">
+    <link rel="stylesheet" href="{% static 'devices/js/morris.min.js'%}">
+    <title>Document</title>
+</head>
+<body style="background: #F5F5F5;">
+    <nav class="navbar navbar-expand-lg navbar-light " style="background:white; height: 50px;">
+        <a class="navbar-brand" href="{% url 'home' %}">Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'dashboard_geren' %}"><img src="{% static 'devices/img/activity.svg' %}"/> Dashboard Gerencial<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="{% static 'devices/img/clipboard.svg' %}" style="margin-left: 10px;"/> Reportes </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'reporte_mkt' %}"><img src="{% static 'devices/img/reporte.svg' %}"/> Reporte MKT</a>
+                <a class="dropdown-item" href="{% url 'historico_general' %}"><img src="{% static 'devices/img/historico.svg' %}"/> Historico General</a>
+                <a class="dropdown-item" href="{% url 'reporte_alerta' %}"><img src="{% static 'devices/img/reporte.svg' %}"/> Reporte de alertas</a>
+                <a class="dropdown-item" href="{% url 'reporte_diario' %}">Reporte diario</a>
+                <a class="dropdown-item" href="{% url 'historial_alertas' %}">Historial de alertas</a>
+                <a class="dropdown-item" href="{% url 'ubicaciones' %}">Ubicaciones</a>
+                <!--<div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>-->
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{% static 'devices/img/book-open.svg' %}" style="margin-left: 10px;"/>
+                    Auditoria  </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Backups</a>
+                  <a class="dropdown-item" href="#">Informe</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{% static 'devices/img/tool.svg' %}" style="margin-left: 10px;"/>
+                    Configuración  </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Alertas</a>
+                  <a class="dropdown-item" href="#">Equipos</a>
+                  <a class="dropdown-item" href="#">Notificaciones SMS</a>
+                  <a class="dropdown-item" href="#">Sucursales</a>
+                  <a class="dropdown-item" href="#">Perfiles</a>
+                  <a class="dropdown-item" href="#">Usuarios</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{% static 'devices/img/alert-triangle.svg' %}" style="margin-left: 10px;"/></a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item">Alertas de camaras</a>
+                  <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Alertas</a>
+                </div>
+              </li>
+          </ul>
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <img style="width: 100px; margin-right: 30px;" src="{% static 'devices/img/logo_telefonica.png' %}" />
+              <img style="width: 100px;" src="{% static 'devices/img/logo_cliente.png' %}" />
+            </li>
+          </ul>
+            <nav class="navbar navbar-expand-lg navbar-light  ">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{% static 'devices/img/users.png' %}"/>
+                            Validacion Hofarm  </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Cambiar Contraseña</a>
+                        <a class="dropdown-item" href="{% url 'login' %}"><img src="{% static 'devices/img/power.svg' %}"/> Salir</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+          
+        </div>
+    </nav>
+      {% block cabecera%}
+
+      {% endblock %}
+    <div class="card" style="margin: 20px; height: 100px;"> 
+      {% block cardbody%}   
+        
+      {% endblock %}
+    </div>
+      {% block content%}
+
+      {% endblock %}
+    <div style="text-align: center; margin-top: 50px; margin-bottom: 10px;">
+      <small class="text-black-50">© 2017. Hofarm - Desarrollado por Ares M2M</small>
+    </div>
+    
+</body>
+</html>

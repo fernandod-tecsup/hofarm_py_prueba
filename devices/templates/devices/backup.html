@@ -1,0 +1,230 @@
+{% extends "devices/home_base.html" %}
+{% block cabecera%}
+{% load static %}
+    <div class="input-group">
+        <div style="margin:20px; float: right;">
+            <label>
+                {{ agrupado }}
+            </label>
+            <button class="btn btn-info text-right" type="submit" ><img src="{% static 'devices/img/printer.svg' %}"> Imprimir</button>
+            
+        </div> 
+    </div>
+  
+{% endblock %}
+{% block cardbody %}
+{% load static %}
+    <div class="card-body">
+        <div class="form-group col-6">   
+            <form class="form" action="" method="POST">  
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Desde: </label>
+                    </div>
+                    <input class="form-control" style="width: 50px;" type="date" name="desde"/>
+                    <div class="input-group-prepend" style="margin-left: 10px;">
+                        <label class="input-group-text" for="inputGroupSelect01">Hasta: </label>
+                        </div>
+                        <input class="form-control" style="width: 50px;" type="date" name="hasta"/>
+                    <div style="margin-left: 10px;">
+                        <button class="btn btn-info" type="submit" ><img src="{% static 'devices/img/search.svg' %}"></button>
+                    </div> 
+                </div>       
+            </form>       
+        </div>
+    </div>
+    <div class=" border-top" style="background: #fafafa; height: 40px;">
+        <a href="">
+        <img src="{% static 'devices/img/ajustes2.png' %}" style="margin: 5px;" />
+        <small class="text-info">Busqueda por sucursales</small>
+        </a>
+    </div>
+{% endblock %}
+    {% block content%}
+    {% load static %}
+    <div class="row" style="margin: 8px;">
+        {% for agrup in agrup %}
+            <div class="col-sm-12" style="margin-top: 10px; margin-bottom: 20px;">   
+                <div class="card border-info">
+                    <div style="background-color: #00bcd4;" class="card-header border-success">
+                            {{ agrup.agrupado }}
+                        <small>
+                            {% if agrup.id_tipo_componente == '2' %}
+                                Temperatura
+                            {% else %}
+                                Humedad
+                            {% endif %}
+                        </small>  
+                    </div>
+                    <div class="card-body">
+                        <div class="row" >                                                   
+                            {% for caja in caja %}
+                                {%if caja.id_tipo_componente == agrup.id_tipo_componente %}
+                                    <div class="col-3" style="text-align: center;">
+                                        <div style="margin-top: 5px;">
+                                            {% if caja.id_tipo_componente == '2' %}
+                                                <img  src="{% static 'devices/img/ventil3.png' %}"/>
+                                            {% else %}
+                                                <img  src="{% static 'devices/img/agua.png' %}"/>
+                                            {% endif %}
+                                            
+                                            <small>{{ caja.ubicacion }}</small>
+                                            </br>
+                                            <div class="font-weight-bolder" style="margin: 5px;">
+                                                <label>{{ caja.ultimo_valor }}</label>
+                                            </div>                            
+                                        </div>
+                                        <div class="row text-black-50">
+                                            <div class="col-6">
+                                                <img  src="{% static 'devices/img/disminucion.png' %}"/>
+                                                <small>{{ caja.valor_minimo }}</small>
+                                                </br>
+                                                <small>T.min</small>
+                                            </div>
+                                            <div class="col-6">
+                                                <img  src="{% static 'devices/img/aumento.png' %}"/>
+                                                <small>{{ caja.valor_maximo }}</small>
+                                                </br>
+                                                <small>T.max</small>
+                                            </div>                                                            
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>  
+                    </div>
+                </div>
+            </div>   
+        {% endfor %}
+            <div class="col-sm-12" style="margin-top: 10px; margin-bottom: 20px;">   
+                <div class="card border-info">
+                    <div style="background-color: #00bcd4;" class="card-header border-success">
+                        <label>Diagrama</label> 
+                    </div>
+                    <div class="card-body">
+                        <div class="row">                                                   
+                            <canvas id="myChart" width="400px" height="100%"></canvas>                          
+                        </div>  
+                    </div>
+                </div>
+            </div>
+
+        <div class="col-sm-12" style="margin-top: 10px; margin-bottom: 20px;">   
+            <div class="card border-info">
+                <div style="background-color: #00bcd4;" class="card-header border-success">
+                    <label>Histórico rango de fecha</label>
+                </div>
+                <div class="card-body">
+                    <div class="row">  
+                        <div class="form-group col-5">                           
+                                <form class="form" action="" method="POST">  
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="inputGroupSelect01">Desde: </label>
+                                        </div>
+                                        <input class="form-control" style="width: 30px;" type="date" name="desde2"/>
+                                        <div class="input-group-prepend" style="margin-left: 10px;">
+                                            <label class="input-group-text" for="inputGroupSelect01">Hasta: </label>
+                                            </div>
+                                            <input class="form-control" style="width: 30px;" type="date" name="hasta2"/>
+                                        <div style="margin-left: 10px;">
+                                            <button class="btn btn-info" type="submit" ><img src="{% static 'devices/img/search.svg' %}"></button>
+                                        </div> 
+                                    </div>       
+                                </form>                           
+                            
+                        </div>                                                 
+                        <div style="width: 100%;" >
+                            <table class="table ">
+                                <thead class="bg-info">
+                                  <tr class="table-info">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Camara</th>
+                                    <th scope="col">Fecha de Registro</th>
+                                    {% for caja in caja %}
+                                    <th scope="col">{{ caja.ubicacion }}</th>
+                                    {% endfor %}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {% for caja in caja %}  
+                                  <tr>
+                                    <th scope="row">{{ caja.id }}</th>
+                                    <td>{{ caja.ubicacion }}</td>
+                                    <td>{{ caja.ultimo_fecha|date:"Y-m-d H:i:s"}}</td>
+                                    <td>{{ caja.valor_maximo }}</td>
+                                    <td>{{ caja.valor_minimo }}</td>
+                                    <td>{{ caja.valor_promedio }}</td>
+                                    <td>{{ caja.ultimo_valor }}</td>
+                                  </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                        </div>                           
+                    </div>  
+                </div>
+            </div>
+        </div>      
+    </div>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['11/05/2020 13:02', '11/05/2020 17:02', '11/05/2020 23:02', '11/05/2020 01:02', '11/06/2020 08:02', '11/06/2020 13:02'],
+                datasets: [{
+                    label: 'A15j Humedad',
+                    data: [11, 15, 3, 6, 5, 4],
+                    backgroundColor: [
+                        'rgba(0, 188, 212, 0)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'L1a Humedad',
+                    data: [10, 14, 4, 5, 7, 5],
+                    backgroundColor: [
+                        'rgba(0, 188, 212, 0)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'A15j Temperatura',
+                    data: [12, 13, 5, 7, 5, 6],
+                    backgroundColor: [
+                        'rgba(0, 188, 212, 0)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'L1a Temperatura',
+                    data: [11, 10, 6, 6, 12, 13],
+                    backgroundColor: [
+                        'rgba(0, 188, 212, 0)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        stacked: false,
+                        beginAtZaero:true
+                    }]
+                }
+            }
+        });
+       </script>
+    {% endblock %}
