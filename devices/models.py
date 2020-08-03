@@ -770,6 +770,11 @@ class Devices(models.Model):
         verbose_name_plural = 'devices'
         ordering = ['agrupado']
     
+    @property
+    def number(self):
+        today = datetime.now()
+        return '%d' % ((today - self.registration_date) * 24 * 60)  # Devuelvo la difererencia en minutos
+    
     def __str__(self):
         return self.ubicacion
 

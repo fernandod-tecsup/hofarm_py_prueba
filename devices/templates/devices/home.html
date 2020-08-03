@@ -1,8 +1,7 @@
 {% extends "devices/home_base.html" %}
 {% block cardbody %}
 {% load static %}
-
-    <div class="card-body">
+    <div class="card-body" style="padding-top: 13px;">
         <div class="form-group col-6">
             <div class="input-group">
                 <form class="form" action="{% url 'home' %}" method="POST">
@@ -12,9 +11,8 @@
                           <label class="input-group-text" for="inputGroupSelect01"><img for="inputGroupSelect01" src="{% static 'devices/img/ubicacion.svg' %}"/></label>
                         </div>
                         <select class="custom-select" id="inputGroupSelect01" style="width: 300px;" name="sucur">
-                                <option selected>Sucursal...</option>
                             {% for sucursal in sucursal %}                                
-                                <option value="{{sucursal.id_sucursal}}">{{sucursal.nombre}}</options>
+                                <option value="{{sucursal.id_sucursal}}" {% if sucursal.id_sucursal == idsucur %}selected {% endif %}>{{sucursal.nombre}}</options>
                             {% endfor %}
                         </select>
                         <div style="margin-left: 10px;">
@@ -34,7 +32,7 @@
 {% endblock %}
     {% block content%}
     {% load static %}
-    <div class="row" style="margin: 8px;">
+    <div id="alerta_incidencias" class="row" style="margin: 8px;">
         {% for agrup in agrup %}
             {% if agrup.cont and agrup.cont == 4 %}
                 <div class="col-sm-6" style="margin-top: 10px; margin-bottom: 20px;">
@@ -43,14 +41,16 @@
             {% else %}
                 <div class="col-sm-2" style="margin-top: 10px; margin-bottom: 20px;">  
             {% endif %}
-                    <div class="card border-info">                     
-                        {% for caja in caja %}
-                            {%if caja.agrupado == agrup.agrupado %}
-                               
-                            {% endif %}
-                        {% endfor %}
-                                <div class="card-header border-success" style="background-color: #00bcd4;">                  
-                                    <a class="text-dark" href="{% url 'backup' %}">{{agrup.agrupado}}</a>
+                                        
+                    {% if agrup.iden == 0 %}
+                        <div class="card border-info"> 
+                            <div class="card-header border-success" style="background-color: #00bcd4;">  
+                    {% else %}
+                        <div class="card border-danger"> 
+                            <div class="card-header " style="background-color: #ff5722; border: solid 2px #ff5722;">  
+                    {% endif %}
+                                                 
+                                    <a class="text-dark" href="{% url 'backup' %}?agrup={{agrup.agrupado}}&sucur={{agrup.id_sucursal}}">{{agrup.agrupado}}</a>
                                     <img style="height: 30px; margin-left: 30px;" src="{% static 'devices/img/calendario.png' %}"/>
                                     <small>{{agrup.updated_at|date:"Y-m-d H:i:s"}}</small>                                           
                                 </div>
@@ -73,7 +73,7 @@
                                                             {% if caja.id_tipo_componente == '2' %}
                                                                 {% if caja.ultimo_valor <= caja.mini %}
                                                                     <img  src="{% static 'devices/img/ventilfrio.png' %}"/>
-                                                                {% elif caja.ultimo_valor >= caja.max %}
+                                                                {% elif caja.ultimo_valor >= caja.maxi %}
                                                                     <img  src="{% static 'devices/img/calentar.png' %}"/>
                                                                 {% else %}
                                                                     <img  src="{% static 'devices/img/ventil3.png' %}"/>
@@ -81,7 +81,7 @@
                                                             {% else %}
                                                                 {% if caja.ultimo_valor <= caja.mini %}
                                                                     <img  src="{% static 'devices/img/humedad.png' %}"/>
-                                                                {% elif caja.ultimo_valor >= caja.max %}
+                                                                {% elif caja.ultimo_valor >= caja.maxi %}
                                                                     <img  src="{% static 'devices/img/aguacaliente.png' %}"/>
                                                                 {% else %}
                                                                     <img  src="{% static 'devices/img/agua.png' %}"/>
@@ -145,7 +145,7 @@
                                                             {% if caja.id_tipo_componente == '2' %}
                                                                 {% if caja.ultimo_valor <= caja.mini %}
                                                                     <img  src="{% static 'devices/img/ventilfrio.png' %}"/>
-                                                                {% elif caja.ultimo_valor >= caja.max %}
+                                                                {% elif caja.ultimo_valor >= caja.maxi %}
                                                                     <img  src="{% static 'devices/img/calentar.png' %}"/>
                                                                 {% else %}
                                                                     <img  src="{% static 'devices/img/ventil3.png' %}"/>
@@ -153,7 +153,7 @@
                                                             {% else %}
                                                                 {% if caja.ultimo_valor <= caja.mini %}
                                                                     <img  src="{% static 'devices/img/humedad.png' %}"/>
-                                                                {% elif caja.ultimo_valor >= caja.max %}
+                                                                {% elif caja.ultimo_valor >= caja.maxi %}
                                                                     <img  src="{% static 'devices/img/calentar.png' %}"/>
                                                                 {% else %}
                                                                     <img  src="{% static 'devices/img/agua.png' %}"/>
@@ -217,7 +217,7 @@
                                                             {% if caja.ultimo_valor > 0 %}
                                                                 {% if caja.ultimo_valor <= caja.mini %}
                                                                     <img  src="{% static 'devices/img/ventilfrio.png' %}"/>
-                                                                {% elif caja.ultimo_valor >= caja.max %}
+                                                                {% elif caja.ultimo_valor >= caja.maxi %}
                                                                     <img  src="{% static 'devices/img/calentar.png' %}"/>
                                                                 {% else %}
                                                                     <img  src="{% static 'devices/img/ventil3.png' %}"/>
@@ -225,7 +225,7 @@
                                                             {% else %}
                                                                 {% if caja.ultimo_valor >= caja.mini %}
                                                                     <img  src="{% static 'devices/img/calentar.png' %}"/>
-                                                                {% elif caja.ultimo_valor <= caja.max %}
+                                                                {% elif caja.ultimo_valor <= caja.maxi%}
                                                                     <img  src="{% static 'devices/img/ventilfrio.png' %}"/>
                                                                 {% else %}
                                                                     <img  src="{% static 'devices/img/ventil3.png' %}"/>
@@ -280,4 +280,5 @@
                     </div>
         {% endfor %}       
                 </div>
+            
     {% endblock %}

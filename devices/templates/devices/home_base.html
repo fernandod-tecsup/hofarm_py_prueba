@@ -15,39 +15,13 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['gauge']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['Memory', 80],
-        ]);
-
-        var options = {
-          width: 400, height: 120,
-          redFrom: 90, redTo: 100,
-          yellowFrom:75, yellowTo: 90,
-          minorTicks: 5
-        };
-
-        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-
-        chart.draw(data, options);
-
-        setInterval(function() {
-          data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
-          chart.draw(data, options);
-        }, 13000);
-      }
-    </script>
+    
     <link rel="stylesheet" href="{% static 'devices/js/morris.js'%}">
     <link rel="stylesheet" href="{% static 'devices/js/morris.min.js'%}">
     <title>Document</title>
+    
 </head>
 <body style="background: #F5F5F5;">
     <nav class="navbar navbar-expand-lg navbar-light " style="background:white; height: 50px;">
@@ -129,10 +103,13 @@
           
         </div>
     </nav>
+    <div class="row" style="margin-top: 15px;">
       {% block cabecera%}
 
       {% endblock %}
-    <div class="card" style="margin: 20px; height: 100px;"> 
+    </div>
+      
+    <div class="card" style="margin-left: 20px;margin-right: 20px; height: 90px;"> 
       {% block cardbody%}   
         
       {% endblock %}
@@ -141,7 +118,7 @@
 
       {% endblock %}
     <div style="text-align: center; margin-top: 50px; margin-bottom: 10px;">
-      <small class="text-black-50">© 2017. Hofarm - Desarrollado por Ares M2M</small>
+      <small class="text-black-50">© 2020. Hofarm - Desarrollado por Ares M2M</small>
     </div>
     
 </body>

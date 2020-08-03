@@ -30,4 +30,6 @@ urlpatterns = [
     path('reporte_mkt/',views.reporte_mkt, name="reporte_mkt"),
     path('ubicaciones/',views.ubicaciones, name="ubicaciones"),
     path('backup/',views.backup,name="backup"),
+    path('generatepdf/',views.generatepdf,name="generatepdf"),
+    path('capturagrafico/',views.capturagrafico,name="capturagrafico"),
 ]
