@@ -47,12 +47,12 @@
                 <div class="card border-danger">
                     <div style="background-color: #ff5722; padding: 10px; font-size: 17px;" class="card-header border-danger">
             {% endif %}
-                            {{ agrup.agrupado }} -                      
-                            {% if agrup.id_tipo_componente == '2' %}
-                                Temperatura
-                            {% else %}
-                                Humedad
-                            {% endif %}                        
+                        {{ agrup.agrupado }} -                      
+                        {% if agrup.id_tipo_componente == '2' %}
+                            Temperatura
+                        {% else %}
+                            Humedad
+                        {% endif %}                        
                     </div>
                     <div class="card-body" style="padding: 5px;">
                         <div class="row justify-content-around" >                                                   
@@ -112,7 +112,7 @@
                     <div style="background-color: #00bcd4; padding: 10px; font-size: 17px;" class="card-header border-success">
                         Diagrama
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="grafico">
                         <div class="row">
                             <div class="form-group col-12">   
                                 <form class="form" action="" method="POST">
@@ -138,18 +138,18 @@
                                         <input class="form-control" style="border-top-right-radius: 20px;border-bottom-right-radius: 20px;" type="number" name="humax" value="{{ humax|safe }}"/>
                         <!-- ...............................................      -->
                                         <div style="margin-left: 100px; margin-right: 100px;">
-                                            <button class="btn btn-info" style="border-radius: 20px;" type="submit" ><img src="{% static 'devices/img/search.svg' %}"> Modificar rango</button>
+                                            <button id="rangos" class="btn btn-info" style="border-radius: 20px;" type="submit" ><img src="{% static 'devices/img/search.svg' %}"> Modificar rango</button>
                                         </div>
                                         <div style="margin-right: 200px; background-color:#ff9900; border-radius: 20px;">
-                                            <a class="btn" href="{% url 'generatepdf' %}?agrup={{agrupado}}" ><img src="{% static 'devices/img/printer.svg' %}"> Imprimir</a>
+                                            <a class="btn" href="{% url 'generatepdf' %}?agrup={{agrupado}}&sucur={{sucursal}}&desde={{desdegrafica}}&hasta={{hastagrafica}}" ><img src="{% static 'devices/img/printer.svg' %}"> Exportar PDF</a>
                                         </div>
                                     </div>
                                     <div class="float-right" style="padding: 0px;">
-                                        <a class="btn" href="{% url 'capturagrafico' %}"><img src="{% static 'devices/img/ar-camera.png' %}"></a>  
+                                        <a id="btnCapturar" href="" download="{{agrupado}}.jpg" class="btn" ><img src="{% static 'devices/img/ar-camera.png' %}"></a>  
                                     </div>          
                                 </form>       
-                            </div>                                                 
-                            <canvas id="myChart" width="400px" height="100%"></canvas>                          
+                            </div>
+                            <canvas id="myChart" width="400px" height="100%"></canvas>                                                                                
                         </div>  
                     </div>
                 </div>
@@ -201,16 +201,18 @@
                                         <tr>
                                             <td style="padding-top: 1px;padding-bottom: 1px;">{{ agrupado }}</td>
                                             <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.fetch }}</td>
-                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba1}} C°</td>
-                                            {% if users.valprueba2 %}
-                                                <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba2 }} C°</td>
+                                            {% if ancho == 4 %}
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba1}} C°</td>                                            
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba2 }} C°</td>                                            
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba3 }} %</td>
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba4 }} %</td>
+                                            {% elif ancho == 2 %}
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba1}} C°</td>                                            
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba2 }} C°</td>
+                                            {% else %}
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba1}} C°</td>                                            
                                             {% endif %}
-                                            {% if users.valprueba3 %}
-                                                <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba3 }} %</td>
-                                            {% endif %}
-                                            {% if users.valprueba4 %}
-                                                <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba4 }} %</td> 
-                                            {% endif %}                                                                                                    
+                                                                                                                                            
                                         </tr> 
                                     {% endfor %} 
                                 </tbody>
@@ -266,9 +268,7 @@
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-    
         <script type="text/javascript">
-        
             const temin = {{teminimo|safe}};
             const tema = {{temaximo|safe}};      
             const huma = {{humaximo|safe}};
@@ -438,9 +438,11 @@
                     }
                 }
             });
-            
-            
-            
+            document.getElementById("btnCapturar").addEventListener('click',function(){
+                var url_base64jp = document.getElementById("myChart").toDataURL("image/jpg");
+                var a = document.getElementById("btnCapturar");
+                a.href =url_base64jp;
+            });
         </script>
        
     {% endblock %}
