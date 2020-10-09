@@ -12,7 +12,11 @@
                         </div>
                         <select class="custom-select" id="inputGroupSelect01" style="width: 300px;" name="sucur">
                             {% for sucursal in sucursal %}                                
-                                <option value="{{sucursal.id_sucursal}}" {% if sucursal.id_sucursal == idsucur %}selected {% endif %}>{{sucursal.nombre}}</options>
+                                <option value="{{sucursal.id_sucursal}}" 
+                                    {% if idsucur == sucursal.id_sucursal%}
+                                        selected
+                                    {%else%}
+                                    {% endif %}>{{sucursal.nombre}}</options>
                             {% endfor %}
                         </select>
                         <div style="margin-left: 10px;">
@@ -40,20 +44,18 @@
                 <div class="col-sm-3" style="margin-top: 10px; margin-bottom: 20px;">
             {% else %}
                 <div class="col-sm-2" style="margin-top: 10px; margin-bottom: 20px;">  
-            {% endif %}
-                                        
-                    {% if agrup.iden == 0 %}
-                        <div class="card border-info"> 
-                            <div class="card-header border-success" style="background-color: #00bcd4;">  
-                    {% else %}
-                        <div class="card border-danger"> 
-                            <div class="card-header " style="background-color: #ff5722; border: solid 2px #ff5722;">  
-                    {% endif %}
-                                                 
-                                    <a class="text-dark" href="{% url 'backup' %}?agrup={{agrup.agrupado}}&sucur={{agrup.id_sucursal}}">{{agrup.agrupado}}</a>
-                                    <img style="height: 30px; margin-left: 30px;" src="{% static 'devices/img/calendario.png' %}"/>
-                                    <small>{{agrup.updated_at|date:"Y-m-d H:i:s"}}</small>                                           
-                                </div>
+            {% endif %}                                        
+                {% if agrup.iden == 0 %}
+                    <div class="card border-info"> 
+                        <div class="card-header border-success" style="background-color: #00bcd4;">  
+                {% else %}
+                    <div class="card border-danger"> 
+                        <div class="card-header " style="background-color: #ff5722; border: solid 2px #ff5722;">  
+                {% endif %}                          
+                            <a class="text-dark" href="{% url 'backup' %}?agrup={{agrup.agrupado}}&sucur={{agrup.id_sucursal}}">{{agrup.agrupado}}</a>
+                            <img style="height: 30px; margin-left: 10px;" src="{% static 'devices/img/calenda.png' %}"/>
+                            <small>{{agrup.updated_at|date:"Y-m-d H:i:s"}}</small>                                           
+                        </div>
                                 <div class="card-body">
                                     <div class="row">                     
                                         {% if agrup.cont and agrup.cont == 4 %}
@@ -61,7 +63,7 @@
                                                 {%if caja.agrupado == agrup.agrupado %}
                                                     <div class="col-3" style="text-align: center;">
                                                         <div class="border-bottom">
-                                                            <label style="margin-bottom: 10px;">
+                                                            <label style="margin-bottom: 10px; padding-top:0px;">
                                                                 {% if caja.id_tipo_componente == '2' %}
                                                                     Temperatura
                                                                 {% else %}
@@ -101,7 +103,7 @@
                                                         </div>
                                                         <div class="row text-black-50">
                                                             <div class="col-6">
-                                                                <img  src="{% static 'devices/img/disminucion.png' %}"/>
+                                                                <img  src="{% static 'devices/img/disminucion2.png' %}"/>
                                                                 <small>
                                                                     {% if caja.id_tipo_componente == '2' %}
                                                                         {{ caja.valor_minimo }} °C
@@ -113,7 +115,7 @@
                                                                 <small>T.min</small>
                                                             </div>
                                                             <div class="col-6">
-                                                                <img  src="{% static 'devices/img/aumento.png' %}"/>
+                                                                <img src="{% static 'devices/img/aumento2.png' %}"/>
                                                                 <small>
                                                                     {% if caja.id_tipo_componente == '2' %}
                                                                         {{ caja.valor_maximo }} °C
@@ -173,7 +175,7 @@
                                                         </div>
                                                         <div class="row text-black-50">
                                                             <div class="col-6">
-                                                                <img  src="{% static 'devices/img/disminucion.png' %}"/>
+                                                                <img  src="{% static 'devices/img/disminucion2.png' %}"/>
                                                                 <small>
                                                                     {% if caja.id_tipo_componente == '2' %}
                                                                         {{ caja.valor_minimo }} °C
@@ -185,7 +187,7 @@
                                                                 <small>T.min</small>
                                                             </div>
                                                             <div class="col-6">
-                                                                <img  src="{% static 'devices/img/aumento.png' %}"/>
+                                                                <img  src="{% static 'devices/img/aumento2.png' %}"/>
                                                                 <small>
                                                                     {% if caja.id_tipo_componente == '2' %}
                                                                         {{ caja.valor_maximo }} °C
@@ -245,7 +247,7 @@
                                                         </div>
                                                         <div class="row text-black-50">
                                                             <div class="col-6">
-                                                                <img  src="{% static 'devices/img/disminucion.png' %}"/>
+                                                                <img  src="{% static 'devices/img/disminucion2.png' %}"/>
                                                                 <small>
                                                                     {% if caja.id_tipo_componente == '2' %}
                                                                         {{ caja.valor_minimo }} °C
@@ -257,7 +259,7 @@
                                                                 <small>T.min</small>
                                                             </div>
                                                             <div class="col-6">
-                                                                <img  src="{% static 'devices/img/aumento.png' %}"/>
+                                                                <img  src="{% static 'devices/img/aumento2.png' %}"/>
                                                                 <small>
                                                                     {% if caja.id_tipo_componente == '2' %}
                                                                         {{ caja.valor_maximo }} °C

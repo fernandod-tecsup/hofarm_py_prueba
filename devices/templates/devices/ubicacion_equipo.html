@@ -33,85 +33,16 @@
     <div class=" border-top" style="background: #fafafa; padding: 0px;">
         <a href="">
         <img src="{% static 'devices/img/ajustes2.png' %}" style="margin: 5px;" />
-        <small class="text-info">Busqueda por sucursales</small>
+        <small class="text-info">Panel de configuracion del grafico</small>
         </a>
     </div>
 {% endblock %}
     {% block content%}
     {% load static %}
-    <div class="row" style="margin: 8px;">
-        {% for agrup in agrup %}
-            <div class="col-sm-12" style="margin-top: 10px; margin-bottom: 20px;">
-            {% if agrup.iden == 0 %}
-                <div class="card border-info">
-                    <div style="background-color: #00bcd4; padding: 10px; font-size: 17px;" class="card-header border-success">
-            {% else %}
-                <div class="card border-danger">
-                    <div style="background-color: #ff5722; padding: 10px; font-size: 17px;" class="card-header border-danger">
-            {% endif %}
-                        {{ agrup.agrupado }} -                      
-                        {% if agrup.id_tipo_componente == '2' %}
-                            Temperatura
-                        {% else %}
-                            Humedad
-                        {% endif %}                        
-                    </div>
-                    <div class="card-body" style="padding: 5px;">
-                        <div class="row justify-content-around" >                                                   
-                            {% for caja in caja %}
-                                {%if caja.id_tipo_componente == agrup.id_tipo_componente %}
-                                    <div class="col-3" style="text-align: center;">
-                                        <div style="margin-top: 5px;">
-                                            {% if caja.id_tipo_componente == '2' %}
-                                                {% if caja.ultimo_valor <= caja.mini %}
-                                                    <img  src="{% static 'devices/img/ventilfrio.png' %}"/>
-                                                {% elif caja.ultimo_valor >= caja.maxi %}
-                                                    <img  src="{% static 'devices/img/calentar.png' %}"/>
-                                                {% else %}
-                                                    <img  src="{% static 'devices/img/ventil3.png' %}"/>
-                                                {% endif %}
-                                            {% else %}
-                                                {% if caja.ultimo_valor <= caja.mini %}
-                                                    <img  src="{% static 'devices/img/humedad.png' %}"/>
-                                                {% elif caja.ultimo_valor >= caja.maxi %}
-                                                    <img  src="{% static 'devices/img/aguacaliente.png' %}"/>
-                                                {% else %}
-                                                    <img  src="{% static 'devices/img/agua.png' %}"/>
-                                                {% endif %}    
-                                            {% endif %}
-                                            
-                                            <small>{{ caja.ubicacion }}</small>
-                                            </br>
-                                            <div class="font-weight-bolder" style="margin: 5px;">
-                                                <label>{{ caja.ultimo_valor }}</label>
-                                            </div>                            
-                                        </div>
-                                        <div class="row text-black-50">
-                                            <div class="col-6">
-                                                <img  src="{% static 'devices/img/disminucion2.png' %}"/>
-                                                <small>{{ caja.valor_minimo }}</small>
-                                                </br>
-                                                <small>T.min</small>
-                                            </div>
-                                            <div class="col-6">
-                                                <img  src="{% static 'devices/img/aumento2.png' %}"/>
-                                                <small>{{ caja.valor_maximo }}</small>
-                                                </br>
-                                                <small>T.max</small>
-                                            </div>                                                            
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>  
-                    </div>
-                </div>
-            </div>   
-        {% endfor %}
-        
+    <div class="row" style="margin: 8px;">   
             <div class="col-sm-12" style="margin-top: 10px; margin-bottom: 20px;">   
                 <div class="card border-info">
-                    <div style="background-color: #00bcd4; padding: 10px; font-size: 17px;" class="card-header border-success">
+                    <div style="background-color: #00bcd4; padding: 10px; font-size: 17px;" class="card-header border-success text-light">
                         Diagrama
                     </div>
                     <div class="card-body" id="grafico">
@@ -152,6 +83,20 @@
                                     </div>          
                                 </form>       
                             </div>
+                            <div class="col-6">
+                                <img src="{% static 'devices/img/logo_cliente.png' %}" alt="">
+                            </div>
+                            <div class="col-6">
+                                <label>{{agrupado}}</label>
+                                </br>
+                                <label for="">Temp: {{ ranmintem }}C° - {{ ranmaxtem }}C°</label>
+                                </br>
+                                <label for="">Hum:
+                                    {% if ranminhum %}
+                                        {{ ranminhum }}% - {{ ranmaxhum }}
+                                    {% endif %}
+                                </label>
+                            </div>
                             <canvas id="myChart" width="400px" height="100%"></canvas>                                                                                
                         </div>  
                     </div>
@@ -161,7 +106,7 @@
         
         <div class="col-sm-12" style="margin-top: 10px; margin-bottom: 20px;">   
             <div class="card border-info">
-                <div style="background-color: #00bcd4; padding: 10px; font-size: 17px;" class="card-header border-success">
+                <div style="background-color: #00bcd4; padding: 10px; font-size: 17px;" class="card-header border-success text-light">
                     Histórico rango de fecha
                 </div>
                 <div class="card-body">
@@ -267,7 +212,96 @@
                     </div>  
                 </div>
             </div>
-        </div>      
+        </div>
+        <div class="col-sm-12" style="margin-top: 10px; margin-bottom: 20px;">   
+            <div class="card border-info">
+                <div style="background-color: #00bcd4; padding: 10px; font-size: 17px;" class="card-header border-success text-light">
+                    Historial de Apagado - Encendido
+                </div>
+                <div class="card-body">
+                    <div class="row">  
+                        <div class="form-group col-12">                                                                          
+                        <div style="width: 100%;" >
+                            <table class="table table-striped border border-info" style="text-align: center;">
+                                <thead class="bg-info">
+                                  <tr class="table-info">                                   
+                                    <th style="padding-top: 0px;padding-bottom: 0px;" scope="col">ID</th>
+                                    <th style="padding-top: 0px;padding-bottom: 0px;" scope="col">Camara</th>
+                                    <th style="padding-top: 0px;padding-bottom: 0px;" scope="col">Hora Apagado</th>
+                                    <th style="padding-top: 0px;padding-bottom: 0px;" scope="col">Hora Prendido</th> 
+                                  </tr>
+                                </thead>
+                                <tbody style="padding: 0px;"> 
+                                    <!--{% for users in users %}                        
+                                        <tr>
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ agrupado }}</td>
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.fetch }}</td>
+                                            {% if ancho == 4 %}
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba1}} C°</td>                                            
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba2 }} C°</td>                                            
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba3 }} %</td>
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba4 }} %</td>
+                                            {% elif ancho == 2 %}
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba1}} C°</td>                                            
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.valprueba2 }} C°</td>
+                                            {% else %}
+                                            <td style="padding-top: 1px;padding-bottom: 1px;">{{ users.total_nivel_1}} C°</td>                                            
+                                            {% endif %}
+                                                                                                                                            
+                                        </tr> 
+                                    {% endfor %}-->
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                              </table>
+                            {% if users.has_other_pages %}
+                            <form action="" method="POST">
+                                {% csrf_token %}   
+                                <nav aria-label="Page" style="margin-left: 10px;">
+                                    <ul class="pagination">
+                                        {% if users.has_previous %}                                                                
+                                            <li class="page-item">
+                                                <button class="page-link" type="submit" name="page" value="{{ users.previous_page_number }}">&laquo;</button>
+                                                <!--<a class="page-link" href="?page={{ users.previous_page_number }}">&laquo;</a>-->
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a>
+                                            </li>
+                                        {% endif %}
+                                        {% for i in users.paginator.page_range %}
+                                        {% if users.number == i %}
+                                            <li class="page-item active bg-info" aria-current="page">
+                                                <a class="page-link" style="background:#00bcd4; border: 1px solid transparent;">
+                                                    <span >{{ i }} <span class="sr-only">(current)</span></span>
+                                                </a>                                          
+                                            </li>
+                                        {% else %}                                       
+                                            <li class="page-item">
+                                                <button class="page-link" type="submit" name="page" style="color: #00bcd4;" value="{{ i }}">{{ i }}</button>
+                                                <!--<a class="page-link" style="color: #00bcd4;" href="?page={{ i }}">{{ i }}</a>-->
+                                            </li>                                            
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% if users.has_next %}
+                                            <li class="page-item">
+                                                <button class="page-link" type="submit" style="color: #00bcd4;" name="page" value="{{ users.next_page_number }}">&raquo;</button>
+                                                <!--<a class="page-link" style="color: #00bcd4;" href="?page={{ users.next_page_number }}">&raquo;</a>-->
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </form> 
+                            {% endif %}
+                        </div>                           
+                    </div>  
+                </div>
+            </div>
+        </div> 
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>

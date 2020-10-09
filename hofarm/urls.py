@@ -31,5 +31,7 @@ urlpatterns = [
     path('ubicaciones/',views.ubicaciones, name="ubicaciones"),
     path('backup/',views.backup,name="backup"),
     path('generatepdf/',views.generatepdf,name="generatepdf"),
+    path('generatepdfMKT/',views.generatepdfMKT,name="generatepdfMKT"),
     path('capturagrafico/',views.capturagrafico,name="capturagrafico"),
+    path('ubicacion_equipo/',views.ubicacion_equipo, name="ubicacion_equipo"),
 ]
