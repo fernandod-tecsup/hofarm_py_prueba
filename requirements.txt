@@ -20,7 +20,7 @@ PyGetWindow==0.0.8
 pylint==2.5.3
 PyMsgBox==1.0.8
 pyPdf==1.13
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 pyperclip==1.8.0
 PyRect==0.1.4
 pyscreenshot==2.2
